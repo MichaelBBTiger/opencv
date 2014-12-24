@@ -144,6 +144,13 @@ if(CTEST_UPDATE_CMAKE_CACHE)
             endif()
         endforeach()
     endif()
+
+    if(CTEST_MODEL MATCHES "Nightly")
+        find_program(CPPCHECK_COMMAND NAMES cppcheck)
+        if(CPPCHECK_COMMAND)
+            set_ifndef(OPENCV_ENABLE_CPPCHECK TRUE)
+        endif()
+    endif()
 endif()
 
 #
@@ -245,6 +252,10 @@ if(CTEST_UPDATE_CMAKE_CACHE)
 
     add_cmake_option("ENABLE_CTEST" "BOOL" "ON")
 
+    if(OPENCV_ENABLE_CPPCHECK)
+        add_cmake_option("ENABLE_CPPCHECK" "BOOL" "ON")
+    endif()
+
     if(CTEST_WITH_COVERAGE OR CTEST_WITH_GCOVR)
         add_cmake_option("ENABLE_COVERAGE" "BOOL" "ON")
     else()
@@ -311,6 +322,9 @@ if(CTEST_STAGE MATCHES "Start")
     ctest_note("OPENCV_FEATURES_ONLY                  : ${OPENCV_FEATURES_ONLY}")
     ctest_note("OPENCV_FEATURES_ENABLE                : ${OPENCV_FEATURES_ENABLE}")
     ctest_note("OPENCV_FEATURES_DISABLE               : ${OPENCV_FEATURES_DISABLE}")
+    ctest_note("")
+
+    ctest_note("OPENCV_ENABLE_CPPCHECK                : ${OPENCV_ENABLE_CPPCHECK}")
     ctest_note("")
 endif()
 

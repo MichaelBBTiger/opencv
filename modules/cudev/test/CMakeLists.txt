@@ -46,5 +46,10 @@ if(OCV_DEPENDENCIES_FOUND)
     set_target_properties(${the_target} PROPERTIES FOLDER "tests accuracy")
   endif()
 
+  # cppcheck
+  ocv_cppcheck("${the_target}" FORCE FAIL_ON_WARNINGS
+    PARALLEL_LEVEL 4
+    LABELS "${OPENCV_MODULE_${the_module}_LABEL};AccuracyTest;CppCheck")
+
   ocv_add_test_from_target("${the_target}" "Accuracy" "${the_target}")
 endif()

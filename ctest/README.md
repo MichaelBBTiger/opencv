@@ -246,6 +246,10 @@ For example:
 set(OPENCV_FEATURES_DISABLE CUDA)
 ```
 
+##### OPENCV_ENABLE_CPPCHECK
+
+Enable/disable cppcheck tests.
+
 
 
 ### 3.4. Optional testing settings

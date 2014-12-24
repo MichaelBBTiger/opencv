@@ -234,6 +234,7 @@ OCV_OPTION(ENABLE_WINRT_MODE          "Build with Windows Runtime support"      
 OCV_OPTION(ENABLE_WINRT_MODE_NATIVE   "Build with Windows Runtime native C++ support"            OFF  IF WIN32 )
 OCV_OPTION(ANDROID_EXAMPLES_WITH_LIBS "Build binaries of Android examples with native libraries" OFF  IF ANDROID )
 OCV_OPTION(ENABLE_IMPL_COLLECTION     "Collect implementation data on function call"             OFF )
+OCV_OPTION(ENABLE_CPPCHECK            "Enable cppcheck testing"                                  OFF IF (CMAKE_VERSION VERSION_GREATER "2.8.6"))
 OCV_OPTION(ENABLE_CTEST               "Enable CTest-based testing"                               OFF )
 
 if(ENABLE_IMPL_COLLECTION)
@@ -532,6 +533,9 @@ endif()
 include(cmake/OpenCVFindMatlab.cmake)
 
 include(cmake/OpenCVDetectVTK.cmake)
+
+# --- cppcheck ---
+include(cmake/OpenCVDetectCppCheck.cmake)
 
 # ----------------------------------------------------------------------------
 # Add CUDA libraries (needed for apps/tools, samples)

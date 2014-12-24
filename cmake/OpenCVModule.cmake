@@ -726,6 +726,12 @@ macro(_ocv_create_module)
     endforeach()
   endif()
   _ocv_add_precompiled_headers(${the_module})
+
+  # cppcheck
+  ocv_cppcheck("${the_module}" FORCE FAIL_ON_WARNINGS
+    PARALLEL_LEVEL 4
+    INPUT "${CMAKE_CURRENT_LIST_DIR}/src"
+    LABELS "${OPENCV_MODULE_${the_module}_LABEL};Module;CppCheck")
 endmacro()
 
 # opencv precompiled headers macro (can add pch to modules and tests)
@@ -863,6 +869,12 @@ function(ocv_add_perf_tests)
         _ocv_add_precompiled_headers(${the_target})
       endif()
 
+      # cppcheck
+      ocv_cppcheck("${the_target}" FORCE FAIL_ON_WARNINGS
+        PARALLEL_LEVEL 4
+        INPUT "${CMAKE_CURRENT_LIST_DIR}/perf"
+        LABELS "${OPENCV_MODULE_${the_module}_LABEL};PerfTest;CppCheck")
+
       ocv_add_test_from_target("${the_target}" "Performance" "${the_target}")
       ocv_add_test_from_target("opencv_sanity_${name}" "Sanity" "${the_target}"
                                "--perf_min_samples=1"
@@ -928,6 +940,12 @@ function(ocv_add_accuracy_tests)
         _ocv_add_precompiled_headers(${the_target})
       endif()
 
+      # cppcheck
+      ocv_cppcheck("${the_target}" FORCE FAIL_ON_WARNINGS
+        PARALLEL_LEVEL 4
+        INPUT "${CMAKE_CURRENT_LIST_DIR}/test"
+        LABELS "${OPENCV_MODULE_${the_module}_LABEL};AccuracyTest;CppCheck")
+
       ocv_add_test_from_target("${the_target}" "Accuracy" "${the_target}")
     else(OCV_DEPENDENCIES_FOUND)
       # TODO: warn about unsatisfied dependencies
@@ -974,6 +992,11 @@ function(ocv_add_samples)
         if(WIN32)
           install(TARGETS ${the_target} RUNTIME DESTINATION "samples/${module_id}" COMPONENT samples)
         endif()
+
+        # cppcheck
+        ocv_cppcheck("${the_target}" FORCE FAIL_ON_WARNINGS
+          PARALLEL_LEVEL 4
+          LABELS "${OPENCV_MODULE_${the_module}_LABEL};Sample;CppCheck")
       endforeach()
     endif()
   endif()
