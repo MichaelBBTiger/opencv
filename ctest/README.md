@@ -250,6 +250,14 @@ set(OPENCV_FEATURES_DISABLE CUDA)
 
 Enable/disable cppcheck tests.
 
+##### OPENCV_CUDA_ARCH_BIN
+
+Set`CUDA_ARCH_BIN` CMake option.
+
+##### OPENCV_CUDA_ARCH_PTX
+
+Set `CUDA_ARCH_PTX` CMake option.
+
 
 
 ### 3.4. Optional testing settings

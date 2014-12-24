@@ -155,6 +155,16 @@ if(CTEST_UPDATE_CMAKE_CACHE)
             set_ifndef(OPENCV_ENABLE_CPPCHECK TRUE)
         endif()
     endif()
+
+    if(NOT OPENCV_FEATURES_DISABLE MATCHES "CUDA")
+        if(CTEST_TARGET_SYSTEM MATCHES "(Android|cross)")
+            set_ifndef(OPENCV_CUDA_ARCH_BIN "3.2")
+            set_ifndef(OPENCV_CUDA_ARCH_PTX "")
+        else()
+            set_ifndef(OPENCV_CUDA_ARCH_BIN "2.0" "3.0" "5.0")
+            set_ifndef(OPENCV_CUDA_ARCH_PTX "")
+        endif()
+    endif()
 endif()
 
 #
@@ -292,6 +302,13 @@ if(CTEST_UPDATE_CMAKE_CACHE)
             add_cmake_option("CPACK_GENERATOR" "STRING" "TGZ")
         endif()
     endif()
+
+    if(DEFINED OPENCV_CUDA_ARCH_BIN)
+        add_cmake_option("CUDA_ARCH_BIN" "STRING" "${OPENCV_CUDA_ARCH_BIN}")
+    endif()
+    if(DEFINED OPENCV_CUDA_ARCH_PTX)
+        add_cmake_option("CUDA_ARCH_PTX" "STRING" "${OPENCV_CUDA_ARCH_PTX}")
+    endif()
 endif()
 
 #
@@ -329,6 +346,10 @@ if(CTEST_STAGE MATCHES "Start")
     ctest_note("")
 
     ctest_note("OPENCV_ENABLE_CPPCHECK                : ${OPENCV_ENABLE_CPPCHECK}")
+    ctest_note("")
+
+    ctest_note("OPENCV_CUDA_ARCH_BIN                  : ${OPENCV_CUDA_ARCH_BIN}")
+    ctest_note("OPENCV_CUDA_ARCH_PTX                  : ${OPENCV_CUDA_ARCH_PTX}")
     ctest_note("")
 endif()
 
