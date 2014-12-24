@@ -30,7 +30,7 @@ else()
     set_ifndef(CTEST_EMPTY_BINARY_DIRECTORY TRUE)
 endif()
 
-if(CTEST_TARGET_SYSTEM MATCHES "(Android|cross)" OR CTEST_MODEL MATCHES "(MemCheck|Documentation)")
+if(CTEST_TARGET_SYSTEM MATCHES "(Android|cross)" OR CTEST_MODEL MATCHES "(Release|MemCheck|Documentation)")
     set_ifndef(CTEST_WITH_TESTS FALSE)
 else()
     set_ifndef(CTEST_WITH_TESTS TRUE)
@@ -79,6 +79,10 @@ set_ifndef(OPENCV_contrib_GIT_BRANCH            "master")
 #
 # Configure OpenCV options
 #
+
+if(CTEST_MODEL MATCHES "Release" AND NOT CTEST_TARGET_SYSTEM MATCHES "(Android|cross)")
+    set_ifndef(OPENCV_TEST_RELEASE_PACKAGE TRUE)
+endif()
 
 if(CTEST_UPDATE_CMAKE_CACHE)
     if(CTEST_TARGET_SYSTEM MATCHES "Windows")
@@ -351,6 +355,9 @@ if(CTEST_STAGE MATCHES "Start")
     ctest_note("OPENCV_CUDA_ARCH_BIN                  : ${OPENCV_CUDA_ARCH_BIN}")
     ctest_note("OPENCV_CUDA_ARCH_PTX                  : ${OPENCV_CUDA_ARCH_PTX}")
     ctest_note("")
+
+    ctest_note("OPENCV_TEST_RELEASE_PACKAGE           : ${OPENCV_TEST_RELEASE_PACKAGE}")
+    ctest_note("")
 endif()
 
 #
@@ -431,3 +438,45 @@ if(CTEST_MODEL MATCHES "Performance")
 endif()
 
 ctest_ext_submit()
+
+#
+# Test package
+#
+
+if(OPENCV_TEST_RELEASE_PACKAGE AND CTEST_STAGE MATCHES "Extra")
+    set(packages_test_dir "${CTEST_BINARY_DIRECTORY}/packages-test")
+    file(MAKE_DIRECTORY "${packages_test_dir}")
+
+    if(CTEST_TARGET_SYSTEM MATCHES "Windows")
+        file(GLOB packages "${CTEST_BINARY_DIRECTORY}/*.zip")
+    else()
+        file(GLOB packages "${CTEST_BINARY_DIRECTORY}/*.tar.gz")
+    endif()
+
+    if(CTEST_TARGET_SYSTEM MATCHES "Android")
+        set(package_ctest_subdir "sdk/etc/ctest")
+    elseif(CTEST_TARGET_SYSTEM MATCHES "Windows")
+        set(package_ctest_subdir "ctest")
+    else()
+        set(package_ctest_subdir "share/OpenCV/ctest")
+    endif()
+
+    foreach(package ${packages})
+        get_filename_component(package_name "${package}" NAME)
+        string(REPLACE ".tar.gz" "" package_name "${package_name}")
+        string(REPLACE ".zip" "" package_name "${package_name}")
+
+        ctest_info("==========================================================================")
+        ctest_info("Test package : ${package_name}")
+        ctest_info("==========================================================================")
+
+        ctest_info("Install package : ${package}")
+        execute_process(COMMAND "${CMAKE_COMMAND}" -E tar xzvf "${package}"
+            WORKING_DIRECTORY "${packages_test_dir}")
+
+        ctest_info("Run CTest for ${package_name}")
+        set(PACKAGE_TEST_ROOT_DIR "${packages_test_dir}/${package_name}/${package_ctest_subdir}")
+        configure_file("${CTEST_SOURCE_DIRECTORY}/ctest/template.package.test.custom.cmake" "${PACKAGE_TEST_ROOT_DIR}/opencv_package_test_custom.cmake" @ONLY)
+        ctest_run_script("${PACKAGE_TEST_ROOT_DIR}/opencv_package_test_custom.cmake")
+    endforeach()
+endif()

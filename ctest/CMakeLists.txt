@@ -74,3 +74,29 @@ if(ENABLE_COVERAGE)
 endif()
 
 add_ctest_target(Performance "Performance" TRUE FALSE FALSE)
+
+# Install
+
+if(INSTALL_TESTS AND OPENCV_TEST_DATA_PATH AND NOT CMAKE_CROSSCOMPILING)
+    if(ANDROID)
+        set(CTEST_INSTALL_DIR "sdk/etc/ctest")
+        set(CTEST_OPENCV_INSTALL_BASE_DIR "../../..")
+    elseif(WIN32)
+        set(CTEST_INSTALL_DIR "ctest")
+        set(CTEST_OPENCV_INSTALL_BASE_DIR "..")
+    else()
+        set(CTEST_INSTALL_DIR "share/OpenCV/ctest")
+        set(CTEST_OPENCV_INSTALL_BASE_DIR "../../..")
+    endif()
+
+    configure_file("template.package.configure.cmake" "${CMAKE_CURRENT_BINARY_DIR}/CMakeLists.txt" @ONLY)
+    configure_file("template.package.test.cmake" "${CMAKE_CURRENT_BINARY_DIR}/opencv_package_test.cmake" @ONLY)
+
+    install(
+        FILES "${CMAKE_CURRENT_BINARY_DIR}/CMakeLists.txt"
+              "${CMAKE_SOURCE_DIR}/CTestConfig.cmake"
+              "${CMAKE_CURRENT_BINARY_DIR}/opencv_package_test.cmake"
+              "${CMAKE_CURRENT_SOURCE_DIR}/ctest_ext.cmake"
+        DESTINATION "${CTEST_INSTALL_DIR}"
+        COMPONENT tests)
+endif()

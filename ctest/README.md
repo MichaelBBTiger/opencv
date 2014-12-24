@@ -258,6 +258,10 @@ Set`CUDA_ARCH_BIN` CMake option.
 
 Set `CUDA_ARCH_PTX` CMake option.
 
+##### OPENCV_TEST_RELEASE_PACKAGE
+
+Enable/disable release package testing.
+
 
 
 ### 3.4. Optional testing settings
