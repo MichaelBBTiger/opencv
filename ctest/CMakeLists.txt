@@ -27,6 +27,8 @@ set(CTEST_BUILD_FLAGS "" CACHE STRING "Build flags (like -j5) for CTest submissi
 find_program(CTEST_MEMORYCHECK_COMMAND
     NAMES valgrind
     DOC "Path to the memory checking command, used for memory error detection.")
+set(CTEST_MEMORYCHECK_SUPPRESSIONS_FILE "${CMAKE_SOURCE_DIR}/valgrind.supp" CACHE FILEPATH
+    "File that contains suppressions for the memory checker")
 set(CTEST_MEMORYCHECK_COMMAND_OPTIONS "" CACHE STRING "Memory check tool options")
 
 # CTEST_COVERAGE_*

@@ -57,6 +57,10 @@ if(CTEST_WITH_COVERAGE AND CTEST_COVERAGE_COMMAND MATCHES "gcov")
     set_ifndef(CTEST_COVERAGE_EXTRA_FLAGS "-l")
 endif()
 
+if(CTEST_WITH_MEMCHECK AND CTEST_MEMORYCHECK_COMMAND MATCHES "valgrind")
+    set_ifndef(CTEST_MEMORYCHECK_SUPPRESSIONS_FILE "${CTEST_SOURCE_DIRECTORY}/valgrind.supp")
+endif()
+
 #
 # Configure extra/contrib repositories
 #

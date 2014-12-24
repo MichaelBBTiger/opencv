@@ -1,0 +1,66 @@
+# CUDA emits a boatload of leaks. Legit or not, we can't do anything about them.
+# Some stack traces have nothing but ??? from libcuda.so in them, so this is
+# unfortunately the most specific filter we can use.
+{
+   CUDA
+   Memcheck:Leak
+   ...
+   obj:*/libcuda.so.*
+}
+
+# See this discussion for details: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=577135
+# It was fixed in zlib 1.2.3.7: https://github.com/madler/zlib/commit/7df877ecc
+# So feel free to delete this somewhere around 2020. ;-)
+{
+   zlib - inflateReset2
+   Memcheck:Cond
+   fun:inflateReset2
+}
+
+# These leaks exist in any program using TBB parallel_for.
+{
+   TBB - allocate TLS
+   Memcheck:Leak
+   fun:calloc
+   fun:_dl_allocate_tls
+   fun:pthread_create@@GLIBC_2.2.5
+   fun:_ZN3tbb8internal3rml14private_server9wake_someEi
+}
+
+{
+   TBB - allocate arena
+   Memcheck:Leak
+   fun:_Znam
+   fun:_ZN3tbb8internal5arenaC1ERNS0_6marketEj
+   fun:_ZN3tbb8internal5arena14allocate_arenaERNS0_6marketEj
+}
+
+# These leaks exist in programs using TBB
+{
+   TBB - padded_allocate issue
+   Memcheck:Leak
+   fun:malloc
+   fun:_ZN3tbb8internalL15padded_allocateEmm
+}
+{
+   TBB - allocate_via_handler_v3 issue
+   Memcheck:Leak
+   fun:malloc
+   fun:_ZN3tbb8internal23allocate_via_handler_v3Em
+}
+
+# GObject allocates some memory on library initialization and never frees it.
+{
+   GObject - gobject_init_ctor
+   Memcheck:Leak
+   ...
+   fun:gobject_init_ctor
+}
+
+# NVIDIA's OpenGL emits bogus-looking leaks.
+{
+   NVIDIA OpenGL
+   Memcheck:Leak
+   ...
+   obj:*/nvidia-*/libGL.so*
+}
