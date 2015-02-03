@@ -56,15 +56,17 @@ set_ifndef(CTEST_CONFIGURATION_TYPE "Release")
 # Start testing
 #
 
-ctest_ext_set_default()
-
 ctest_ext_start()
 
 #
-# Clean binary directory if needed
+# Configure
 #
 
-ctest_ext_clean_build()
+ctest_ext_configure()
+
+#
+# Remove previous test reports
+#
 
 set(TEST_REPORTS_DIR "${CTEST_BINARY_DIRECTORY}/test-reports")
 set(ACCURACY_REPORTS_DIR "${TEST_REPORTS_DIR}/accuracy")
@@ -82,12 +84,6 @@ if(CTEST_STAGE MATCHES "Configure")
         file(REMOVE_RECURSE "${PERF_REPORTS_DIR}")
     endif()
 endif()
-
-#
-# Configure
-#
-
-ctest_ext_configure()
 
 #
 # Test

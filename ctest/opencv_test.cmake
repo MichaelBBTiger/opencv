@@ -2,37 +2,41 @@
 # Include CTest Ext module
 #
 
-function(update_ctest_ext)
-    message("Update CTest Extension module")
+if(NOT CTEST_EXT_INCLUDED)
+    function(download_ctest_ext)
+        message("Update CTest Extension module")
 
-    find_package(Git QUIET)
+        find_package(Git QUIET)
 
-    set(repo_url "https://github.com/jet47/ctest-ext.git")
-    set(repo_dir "${CMAKE_CURRENT_LIST_DIR}/ctest-ext")
-    set(tmp_dir "${CMAKE_CURRENT_LIST_DIR}/ctest-ext-tmp")
+        set(repo_url "https://github.com/jet47/ctest-ext.git")
+        set(repo_dir "${CMAKE_CURRENT_LIST_DIR}/ctest-ext")
+        set(tmp_dir "${CMAKE_CURRENT_LIST_DIR}/ctest-ext-tmp")
 
-    if(NOT EXISTS "${repo_dir}")
-        set(CTEST_CHECKOUT_COMMAND "${GIT_EXECUTABLE} clone ${repo_url} ${repo_dir}")
+        if(NOT EXISTS "${repo_dir}")
+            set(CTEST_CHECKOUT_COMMAND "${GIT_EXECUTABLE} clone ${repo_url} ${repo_dir}")
+        endif()
+        set(CTEST_UPDATE_COMMAND "${GIT_EXECUTABLE}")
+
+        ctest_start("CTestExt" "${repo_dir}" "${tmp_dir}")
+        ctest_update(SOURCE "${repo_dir}")
+
+        file(REMOVE_RECURSE "${tmp_dir}")
+
+        set(CTEST_EXT_MODULE_PATH "${repo_dir}/ctest_ext.cmake" PARENT_SCOPE)
+    endfunction()
+
+    if(NOT DEFINED CTEST_EXT_MODULE_PATH)
+        if(DEFINED ENV{CTEST_EXT_MODULE_PATH} AND EXISTS "$ENV{CTEST_EXT_MODULE_PATH}")
+            set(CTEST_EXT_MODULE_PATH "$ENV{CTEST_EXT_MODULE_PATH}")
+        elseif(EXISTS "${CMAKE_CURRENT_LIST_DIR}/ctest_ext.cmake")
+            set(CTEST_EXT_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/ctest_ext.cmake")
+        else()
+            download_ctest_ext()
+        endif()
     endif()
-    set(CTEST_UPDATE_COMMAND "${GIT_EXECUTABLE}")
 
-    ctest_start("CTestExt" "${repo_dir}" "${tmp_dir}")
-    ctest_update(SOURCE "${repo_dir}")
-
-    file(REMOVE_RECURSE "${tmp_dir}")
-
-    set(CTEST_EXT_MODULE_PATH "${repo_dir}/ctest_ext.cmake" PARENT_SCOPE)
-endfunction()
-
-if(NOT DEFINED CTEST_EXT_MODULE_PATH)
-    if(EXISTS "${CMAKE_CURRENT_LIST_DIR}/ctest_ext.cmake")
-        set(CTEST_EXT_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/ctest_ext.cmake")
-    else()
-        update_ctest_ext()
-    endif()
+    include("${CTEST_EXT_MODULE_PATH}")
 endif()
-
-include("${CTEST_EXT_MODULE_PATH}")
 
 #
 # Repository settings

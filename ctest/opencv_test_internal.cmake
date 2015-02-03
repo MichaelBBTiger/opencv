@@ -1,7 +1,3 @@
-if(NOT CTEST_EXT_INCLUDED)
-    message(FATAL_ERROR "CTest Ext module is not included")
-endif()
-
 #
 # Check supported targets and models
 #
@@ -37,6 +33,7 @@ else()
 endif()
 
 set_ifndef(CTEST_WITH_GCOVR             FALSE)
+set_ifndef(CTEST_WITH_LCOV              FALSE)
 if(NOT CTEST_MODEL MATCHES "Nightly")
     set_ifndef(CTEST_WITH_COVERAGE      FALSE)
 else()
@@ -85,22 +82,6 @@ if(CTEST_MODEL MATCHES "Release" AND NOT CTEST_TARGET_SYSTEM MATCHES "(Android|c
 endif()
 
 if(CTEST_UPDATE_CMAKE_CACHE)
-    if(CTEST_TARGET_SYSTEM MATCHES "Windows")
-        if(CTEST_TARGET_SYSTEM MATCHES "64")
-            set_ifndef(CTEST_CMAKE_GENERATOR "Visual Studio 12 Win64")
-        else()
-            set_ifndef(CTEST_CMAKE_GENERATOR "Visual Studio 12")
-        endif()
-    else()
-        set_ifndef(CTEST_CMAKE_GENERATOR "Unix Makefiles")
-    endif()
-
-    if(CTEST_MODEL MATCHES "(Release|Performance)")
-        set_ifndef(CTEST_CONFIGURATION_TYPE "Release")
-    else()
-        set_ifndef(CTEST_CONFIGURATION_TYPE "Debug")
-    endif()
-
     if(CTEST_TARGET_SYSTEM MATCHES "Android")
         set_ifndef(OPENCV_BUILD_SHARED_LIBS FALSE)
     else()
@@ -175,15 +156,15 @@ endif()
 # Checkout/update opencv_extra and opencv_contrib if needed
 #
 
-ctest_info("==========================================================================")
-ctest_info("Checkout/update testdata")
-ctest_info("==========================================================================")
+ctest_ext_info("==========================================================================")
+ctest_ext_info("Checkout/update testdata")
+ctest_ext_info("==========================================================================")
 
 if(OPENCV_EXTRA_SOURCE_DIRECTORY)
     if(NOT EXISTS "${OPENCV_EXTRA_SOURCE_DIRECTORY}")
         check_vars_def(OPENCV_EXTRA_GIT_URL OPENCV_EXTRA_GIT_BRANCH)
 
-        checkout_git_repo("${OPENCV_EXTRA_GIT_URL}" "${OPENCV_EXTRA_SOURCE_DIRECTORY}"
+        clone_git_repo("${OPENCV_EXTRA_GIT_URL}" "${OPENCV_EXTRA_SOURCE_DIRECTORY}"
             BRANCH "${OPENCV_EXTRA_GIT_BRANCH}")
 
         set(HAVE_UPDATES TRUE)
@@ -200,9 +181,9 @@ if(OPENCV_EXTRA_SOURCE_DIRECTORY)
     endif()
 endif()
 
-ctest_info("==========================================================================")
-ctest_info("Checkout/update extra modules")
-ctest_info("==========================================================================")
+ctest_ext_info("==========================================================================")
+ctest_ext_info("Checkout/update extra modules")
+ctest_ext_info("==========================================================================")
 
 foreach(module ${OPENCV_EXTRA_MODULES})
     set_ifndef(OPENCV_${module}_SOURCE_DIRECTORY "${CTEST_DASHBOARD_ROOT}/${module}")
@@ -213,7 +194,7 @@ foreach(module ${OPENCV_EXTRA_MODULES})
     if(NOT EXISTS "${OPENCV_${module}_SOURCE_DIRECTORY}")
         check_vars_def(OPENCV_${module}_GIT_URL OPENCV_${module}_GIT_BRANCH)
 
-        checkout_git_repo("${OPENCV_${module}_GIT_URL}" "${OPENCV_${module}_SOURCE_DIRECTORY}"
+        clone_git_repo("${OPENCV_${module}_GIT_URL}" "${OPENCV_${module}_SOURCE_DIRECTORY}"
             BRANCH "${OPENCV_${module}_GIT_BRANCH}")
 
         set(HAVE_UPDATES TRUE)
@@ -245,7 +226,7 @@ if(NOT EXISTS "${CTEST_BINARY_DIRECTORY}/CMakeCache.txt")
 endif()
 
 if(IS_CONTINUOUS AND NOT IS_BINARY_EMPTY AND NOT HAVE_UPDATES)
-    ctest_info("Continuous model : no updates")
+    ctest_ext_info("Continuous model : no updates")
     return()
 endif()
 
@@ -254,64 +235,80 @@ endif()
 #
 
 if(CTEST_UPDATE_CMAKE_CACHE)
+    if(CTEST_TARGET_SYSTEM MATCHES "Windows")
+        if(CTEST_TARGET_SYSTEM MATCHES "64")
+            set_ifndef(CTEST_CMAKE_GENERATOR "Visual Studio 12 Win64")
+        else()
+            set_ifndef(CTEST_CMAKE_GENERATOR "Visual Studio 12")
+        endif()
+    else()
+        set_ifndef(CTEST_CMAKE_GENERATOR "Unix Makefiles")
+    endif()
+
+    if(CTEST_MODEL MATCHES "(Release|Performance)")
+        set_ifndef(CTEST_CONFIGURATION_TYPE "Release")
+    else()
+        set_ifndef(CTEST_CONFIGURATION_TYPE "Debug")
+    endif()
+
     if(CTEST_TARGET_SYSTEM MATCHES "Android")
-        add_cmake_option("CMAKE_TOOLCHAIN_FILE" "FILEPATH" "${CTEST_SOURCE_DIRECTORY}/platforms/android/android.toolchain.cmake")
+        add_cmake_cache_entry("CMAKE_TOOLCHAIN_FILE" TYPE "FILEPATH" "${CTEST_SOURCE_DIRECTORY}/platforms/android/android.toolchain.cmake")
     elseif(CTEST_TARGET_SYSTEM MATCHES "Linux.*ARMHF-cross")
-        add_cmake_option("CMAKE_TOOLCHAIN_FILE" "FILEPATH" "${CTEST_SOURCE_DIRECTORY}/platforms/linux/arm-gnueabi.toolchain.cmake")
+        add_cmake_cache_entry("CMAKE_TOOLCHAIN_FILE" TYPE "FILEPATH" "${CTEST_SOURCE_DIRECTORY}/platforms/linux/arm-gnueabi.toolchain.cmake")
     endif()
 
     if(OPENCV_TEST_DATA_PATH AND EXISTS "${OPENCV_TEST_DATA_PATH}")
-        add_cmake_option("OPENCV_TEST_DATA_PATH" "PATH" "${OPENCV_TEST_DATA_PATH}")
+        add_cmake_cache_entry("OPENCV_TEST_DATA_PATH" TYPE "PATH" "${OPENCV_TEST_DATA_PATH}")
     endif()
 
     if(OPENCV_EXTRA_MODULES_PATH)
-        add_cmake_option("OPENCV_EXTRA_MODULES_PATH" "STRING" "${OPENCV_EXTRA_MODULES_PATH}")
+        add_cmake_cache_entry("OPENCV_EXTRA_MODULES_PATH" TYPE "STRING" "${OPENCV_EXTRA_MODULES_PATH}")
     endif()
 
-    add_cmake_option("ENABLE_CTEST" "BOOL" "ON")
+    add_cmake_cache_entry("ENABLE_CTEST" TYPE "BOOL" "ON")
 
     if(OPENCV_ENABLE_CPPCHECK)
-        add_cmake_option("ENABLE_CPPCHECK" "BOOL" "ON")
+        add_cmake_cache_entry("ENABLE_CPPCHECK" TYPE "BOOL" "ON")
     endif()
 
-    if(CTEST_WITH_COVERAGE OR CTEST_WITH_GCOVR)
-        add_cmake_option("ENABLE_COVERAGE" "BOOL" "ON")
+    if(CTEST_WITH_COVERAGE OR CTEST_WITH_GCOVR OR CTEST_WITH_LCOV)
+        add_cmake_cache_entry("ENABLE_COVERAGE" TYPE "BOOL" "ON")
     else()
-        add_cmake_option("ENABLE_COVERAGE" "BOOL" "OFF")
+        add_cmake_cache_entry("ENABLE_COVERAGE" TYPE "BOOL" "OFF")
     endif()
 
-    add_cmake_option("BUILD_SHARED_LIBS" "BOOL" "${OPENCV_BUILD_SHARED_LIBS}")
-    add_cmake_option("BUILD_EXAMPLES"    "BOOL" "${OPENCV_BUILD_EXAMPLES}")
-    add_cmake_option("BUILD_TESTS"       "BOOL" "ON")
-    add_cmake_option("BUILD_PERF_TESTS"  "BOOL" "ON")
+    add_cmake_cache_entry("BUILD_SHARED_LIBS" TYPE "BOOL" "${OPENCV_BUILD_SHARED_LIBS}")
+    add_cmake_cache_entry("BUILD_EXAMPLES"    TYPE "BOOL" "${OPENCV_BUILD_EXAMPLES}")
+    add_cmake_cache_entry("BUILD_TESTS"       TYPE "BOOL" "ON")
+    add_cmake_cache_entry("BUILD_PERF_TESTS"  TYPE "BOOL" "ON")
 
-    if(CTEST_MODEL MATCHES "Documentatation")
-        add_cmake_option("BUILD_DOCS" "BOOL" "ON")
+    if(CTEST_MODEL MATCHES "Documentation")
+        add_cmake_cache_entry("BUILD_DOCS" TYPE "BOOL" "ON")
     endif()
 
     foreach(item ${OPENCV_FEATURES_ENABLE})
-        add_cmake_option("WITH_${item}" "BOOL" "ON")
+        add_cmake_cache_entry("WITH_${item}" TYPE "BOOL" "ON")
     endforeach()
 
     foreach(item ${OPENCV_FEATURES_DISABLE})
-        add_cmake_option("WITH_${item}" "BOOL" "OFF")
+        add_cmake_cache_entry("WITH_${item}" TYPE "BOOL" "OFF")
     endforeach()
 
     if(CTEST_MODEL MATCHES "Release")
-        add_cmake_option("INSTALL_TESTS" "BOOL" "ON")
+        add_cmake_cache_entry("INSTALL_TESTS" TYPE "BOOL" "ON")
 
         if(CTEST_TARGET_SYSTEM MATCHES "Windows")
-            add_cmake_option("CPACK_GENERATOR" "STRING" "ZIP")
+            add_cmake_cache_entry("CPACK_GENERATOR" TYPE "STRING" "ZIP")
         else()
-            add_cmake_option("CPACK_GENERATOR" "STRING" "TGZ")
+            add_cmake_cache_entry("CPACK_GENERATOR" TYPE "STRING" "TGZ")
         endif()
     endif()
 
     if(DEFINED OPENCV_CUDA_ARCH_BIN)
-        add_cmake_option("CUDA_ARCH_BIN" "STRING" "${OPENCV_CUDA_ARCH_BIN}")
+        add_cmake_cache_entry("CUDA_ARCH_BIN" TYPE "STRING" "${OPENCV_CUDA_ARCH_BIN}")
     endif()
     if(DEFINED OPENCV_CUDA_ARCH_PTX)
-        add_cmake_option("CUDA_ARCH_PTX" "STRING" "${OPENCV_CUDA_ARCH_PTX}")
+        add_cmake_cache_entry("CUDA_ARCH_PTX" TYPE "STRING" "${OPENCV_CUDA_ARCH_PTX}")
     endif()
 endif()
 
@@ -319,52 +316,48 @@ endif()
 # Start testing
 #
 
-ctest_ext_set_default()
-
 ctest_ext_start()
 
 if(CTEST_STAGE MATCHES "Start")
-    ctest_note("OPENCV_EXTRA_SOURCE_DIRECTORY         : ${OPENCV_EXTRA_SOURCE_DIRECTORY}")
-    ctest_note("OPENCV_EXTRA_GIT_URL                  : ${OPENCV_EXTRA_GIT_URL}")
-    ctest_note("OPENCV_EXTRA_GIT_BRANCH               : ${OPENCV_EXTRA_GIT_BRANCH}")
-    ctest_note("OPENCV_TEST_DATA_PATH                 : ${OPENCV_TEST_DATA_PATH}")
-    ctest_note("")
+    ctest_ext_note("OPENCV_EXTRA_SOURCE_DIRECTORY         : ${OPENCV_EXTRA_SOURCE_DIRECTORY}")
+    ctest_ext_note("OPENCV_EXTRA_GIT_URL                  : ${OPENCV_EXTRA_GIT_URL}")
+    ctest_ext_note("OPENCV_EXTRA_GIT_BRANCH               : ${OPENCV_EXTRA_GIT_BRANCH}")
+    ctest_ext_note("OPENCV_TEST_DATA_PATH                 : ${OPENCV_TEST_DATA_PATH}")
+    ctest_ext_note("")
 
-    ctest_note("OPENCV_EXTRA_MODULES                  : ${OPENCV_EXTRA_MODULES}")
+    ctest_ext_note("OPENCV_EXTRA_MODULES                  : ${OPENCV_EXTRA_MODULES}")
     foreach(module ${OPENCV_EXTRA_MODULES})
-        ctest_note("OPENCV_${module}_SOURCE_DIRECTORY     : ${OPENCV_${module}_SOURCE_DIRECTORY}")
-        ctest_note("OPENCV_${module}_MODULES_DIRECTORY    : ${OPENCV_${module}_MODULES_DIRECTORY}")
-        ctest_note("OPENCV_${module}_GIT_URL              : ${OPENCV_${module}_GIT_URL}")
-        ctest_note("OPENCV_${module}_GIT_BRANCH           : ${OPENCV_${module}_GIT_BRANCH}")
+        ctest_ext_note("OPENCV_${module}_SOURCE_DIRECTORY     : ${OPENCV_${module}_SOURCE_DIRECTORY}")
+        ctest_ext_note("OPENCV_${module}_MODULES_DIRECTORY    : ${OPENCV_${module}_MODULES_DIRECTORY}")
+        ctest_ext_note("OPENCV_${module}_GIT_URL              : ${OPENCV_${module}_GIT_URL}")
+        ctest_ext_note("OPENCV_${module}_GIT_BRANCH           : ${OPENCV_${module}_GIT_BRANCH}")
     endforeach()
-    ctest_note("OPENCV_EXTRA_MODULES_PATH             : ${OPENCV_EXTRA_MODULES_PATH}")
-    ctest_note("")
+    ctest_ext_note("OPENCV_EXTRA_MODULES_PATH             : ${OPENCV_EXTRA_MODULES_PATH}")
+    ctest_ext_note("")
 
-    ctest_note("OPENCV_BUILD_SHARED_LIBS              : ${OPENCV_BUILD_SHARED_LIBS}")
-    ctest_note("OPENCV_BUILD_EXAMPLES                 : ${OPENCV_BUILD_EXAMPLES}")
-    ctest_note("")
+    ctest_ext_note("OPENCV_BUILD_SHARED_LIBS              : ${OPENCV_BUILD_SHARED_LIBS}")
+    ctest_ext_note("OPENCV_BUILD_EXAMPLES                 : ${OPENCV_BUILD_EXAMPLES}")
+    ctest_ext_note("")
 
-    ctest_note("OPENCV_FEATURES_ONLY                  : ${OPENCV_FEATURES_ONLY}")
-    ctest_note("OPENCV_FEATURES_ENABLE                : ${OPENCV_FEATURES_ENABLE}")
-    ctest_note("OPENCV_FEATURES_DISABLE               : ${OPENCV_FEATURES_DISABLE}")
-    ctest_note("")
+    ctest_ext_note("OPENCV_FEATURES_ONLY                  : ${OPENCV_FEATURES_ONLY}")
+    ctest_ext_note("OPENCV_FEATURES_ENABLE                : ${OPENCV_FEATURES_ENABLE}")
+    ctest_ext_note("OPENCV_FEATURES_DISABLE               : ${OPENCV_FEATURES_DISABLE}")
+    ctest_ext_note("")
 
-    ctest_note("OPENCV_ENABLE_CPPCHECK                : ${OPENCV_ENABLE_CPPCHECK}")
-    ctest_note("")
+    ctest_ext_note("OPENCV_ENABLE_CPPCHECK                : ${OPENCV_ENABLE_CPPCHECK}")
+    ctest_ext_note("")
 
-    ctest_note("OPENCV_CUDA_ARCH_BIN                  : ${OPENCV_CUDA_ARCH_BIN}")
-    ctest_note("OPENCV_CUDA_ARCH_PTX                  : ${OPENCV_CUDA_ARCH_PTX}")
-    ctest_note("")
+    ctest_ext_note("OPENCV_CUDA_ARCH_BIN                  : ${OPENCV_CUDA_ARCH_BIN}")
+    ctest_ext_note("OPENCV_CUDA_ARCH_PTX                  : ${OPENCV_CUDA_ARCH_PTX}")
+    ctest_ext_note("")
 
-    ctest_note("OPENCV_TEST_RELEASE_PACKAGE           : ${OPENCV_TEST_RELEASE_PACKAGE}")
-    ctest_note("")
+    ctest_ext_note("OPENCV_TEST_RELEASE_PACKAGE           : ${OPENCV_TEST_RELEASE_PACKAGE}")
+    ctest_ext_note("")
 endif()
 
 #
-# Clean binary directory if needed
+# Remove previous test reports
 #
-
-ctest_ext_clean_build()
 
 set(TEST_REPORTS_DIR "${CTEST_BINARY_DIRECTORY}/test-reports")
 set(ACCURACY_REPORTS_DIR "${TEST_REPORTS_DIR}/accuracy")
@@ -372,14 +365,8 @@ set(PERF_REPORTS_DIR "${TEST_REPORTS_DIR}/performance")
 set(SANITY_REPORTS_DIR "${TEST_REPORTS_DIR}/sanity")
 
 if(CTEST_STAGE MATCHES "Configure")
-    if(EXISTS "${ACCURACY_REPORTS_DIR}")
-        file(REMOVE_RECURSE "${ACCURACY_REPORTS_DIR}")
-    endif()
-    if(EXISTS "${SANITY_REPORTS_DIR}")
-        file(REMOVE_RECURSE "${SANITY_REPORTS_DIR}")
-    endif()
-    if(EXISTS "${PERF_REPORTS_DIR}")
-        file(REMOVE_RECURSE "${PERF_REPORTS_DIR}")
+    if(NOT CTEST_EMPTY_BINARY_DIRECTORY AND EXISTS "${TEST_REPORTS_DIR}")
+        file(REMOVE_RECURSE "${TEST_REPORTS_DIR}")
     endif()
 endif()
 
@@ -418,7 +405,7 @@ endif()
 # Coverage
 #
 
-ctest_ext_coverage(CTEST_OPTIONS LABELS "Module")
+ctest_ext_coverage(CTEST LABELS "Module")
 
 #
 # MemCheck
@@ -466,15 +453,15 @@ if(OPENCV_TEST_RELEASE_PACKAGE AND CTEST_STAGE MATCHES "Extra")
         string(REPLACE ".tar.gz" "" package_name "${package_name}")
         string(REPLACE ".zip" "" package_name "${package_name}")
 
-        ctest_info("==========================================================================")
-        ctest_info("Test package : ${package_name}")
-        ctest_info("==========================================================================")
+        ctest_ext_info("==========================================================================")
+        ctest_ext_info("Test package : ${package_name}")
+        ctest_ext_info("==========================================================================")
 
-        ctest_info("Install package : ${package}")
+        ctest_ext_info("Install package : ${package}")
         execute_process(COMMAND "${CMAKE_COMMAND}" -E tar xzvf "${package}"
             WORKING_DIRECTORY "${packages_test_dir}")
 
-        ctest_info("Run CTest for ${package_name}")
+        ctest_ext_info("Run CTest for ${package_name}")
         set(PACKAGE_TEST_ROOT_DIR "${packages_test_dir}/${package_name}/${package_ctest_subdir}")
         configure_file("${CTEST_SOURCE_DIRECTORY}/ctest/template.package.test.custom.cmake" "${PACKAGE_TEST_ROOT_DIR}/opencv_package_test_custom.cmake" @ONLY)
         ctest_run_script("${PACKAGE_TEST_ROOT_DIR}/opencv_package_test_custom.cmake")
