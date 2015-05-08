@@ -87,7 +87,7 @@ PERF_TEST_P(Image, ObjDetect_HOG,
 
         TEST_CYCLE() hog.detectMultiScale(img, cpu_found_locations);
 
-        SANITY_CHECK(cpu_found_locations);
+        SANITY_CHECK_NOTHING();
     }
 }
 
@@ -129,7 +129,7 @@ PERF_TEST_P(ImageAndCascade, ObjDetect_HaarClassifier,
 
         TEST_CYCLE() cascade.detectMultiScale(img, cpu_rects);
 
-        SANITY_CHECK(cpu_rects);
+        SANITY_CHECK_NOTHING();
     }
 }
 
@@ -168,6 +168,6 @@ PERF_TEST_P(ImageAndCascade, ObjDetect_LBPClassifier,
 
         TEST_CYCLE() cascade.detectMultiScale(img, cpu_rects);
 
-        SANITY_CHECK(cpu_rects);
+        SANITY_CHECK_NOTHING();
     }
 }

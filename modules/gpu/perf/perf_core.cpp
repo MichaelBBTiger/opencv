@@ -85,7 +85,7 @@ PERF_TEST_P(Sz_Depth_Cn, Core_Merge,
 
         TEST_CYCLE() cv::merge(src, dst);
 
-        CPU_SANITY_CHECK(dst);
+        SANITY_CHECK_NOTHING();
     }
 }
 
@@ -123,11 +123,7 @@ PERF_TEST_P(Sz_Depth_Cn, Core_Split,
 
         TEST_CYCLE() cv::split(src, dst);
 
-        const cv::Mat& dst0 = dst[0];
-        const cv::Mat& dst1 = dst[1];
-
-        CPU_SANITY_CHECK(dst0);
-        CPU_SANITY_CHECK(dst1);
+        SANITY_CHECK_NOTHING();
     }
 }
 
@@ -163,7 +159,7 @@ PERF_TEST_P(Sz_Depth, Core_AddMat,
 
         TEST_CYCLE() cv::add(src1, src2, dst);
 
-        CPU_SANITY_CHECK(dst);
+        SANITY_CHECK_NOTHING();
     }
 }
 
@@ -198,7 +194,7 @@ PERF_TEST_P(Sz_Depth, Core_AddScalar,
 
         TEST_CYCLE() cv::add(src, s, dst);
 
-        CPU_SANITY_CHECK(dst);
+        SANITY_CHECK_NOTHING();
     }
 }
 
@@ -234,7 +230,7 @@ PERF_TEST_P(Sz_Depth, Core_SubtractMat,
 
         TEST_CYCLE() cv::subtract(src1, src2, dst);
 
-        CPU_SANITY_CHECK(dst);
+        SANITY_CHECK_NOTHING();
     }
 }
 
@@ -269,7 +265,7 @@ PERF_TEST_P(Sz_Depth, Core_SubtractScalar,
 
         TEST_CYCLE() cv::subtract(src, s, dst);
 
-        CPU_SANITY_CHECK(dst);
+        SANITY_CHECK_NOTHING();
     }
 }
 
@@ -305,7 +301,7 @@ PERF_TEST_P(Sz_Depth, Core_MultiplyMat,
 
         TEST_CYCLE() cv::multiply(src1, src2, dst);
 
-        CPU_SANITY_CHECK(dst);
+        SANITY_CHECK_NOTHING();
     }
 }
 
@@ -340,7 +336,7 @@ PERF_TEST_P(Sz_Depth, Core_MultiplyScalar,
 
         TEST_CYCLE() cv::multiply(src, s, dst);
 
-        CPU_SANITY_CHECK(dst);
+        SANITY_CHECK_NOTHING();
     }
 }
 
@@ -376,7 +372,7 @@ PERF_TEST_P(Sz_Depth, Core_DivideMat,
 
         TEST_CYCLE() cv::divide(src1, src2, dst);
 
-        CPU_SANITY_CHECK(dst);
+        SANITY_CHECK_NOTHING();
     }
 }
 
@@ -411,7 +407,7 @@ PERF_TEST_P(Sz_Depth, Core_DivideScalar,
 
         TEST_CYCLE() cv::divide(src, s, dst);
 
-        CPU_SANITY_CHECK(dst);
+        SANITY_CHECK_NOTHING();
     }
 }
 
@@ -446,7 +442,7 @@ PERF_TEST_P(Sz_Depth, Core_DivideScalarInv,
 
         TEST_CYCLE() cv::divide(s, src, dst);
 
-        CPU_SANITY_CHECK(dst);
+        SANITY_CHECK_NOTHING();
     }
 }
 
@@ -482,7 +478,7 @@ PERF_TEST_P(Sz_Depth, Core_AbsDiffMat,
 
         TEST_CYCLE() cv::absdiff(src1, src2, dst);
 
-        CPU_SANITY_CHECK(dst);
+        SANITY_CHECK_NOTHING();
     }
 }
 
@@ -517,7 +513,7 @@ PERF_TEST_P(Sz_Depth, Core_AbsDiffScalar,
 
         TEST_CYCLE() cv::absdiff(src, s, dst);
 
-        CPU_SANITY_CHECK(dst);
+        SANITY_CHECK_NOTHING();
     }
 }
 
@@ -605,7 +601,7 @@ PERF_TEST_P(Sz_Depth, Core_Sqrt,
 
         TEST_CYCLE() cv::sqrt(src, dst);
 
-        CPU_SANITY_CHECK(dst);
+        SANITY_CHECK_NOTHING();
     }
 }
 
@@ -637,7 +633,7 @@ PERF_TEST_P(Sz_Depth, Core_Log,
 
         TEST_CYCLE() cv::log(src, dst);
 
-        CPU_SANITY_CHECK(dst);
+        SANITY_CHECK_NOTHING();
     }
 }
 
@@ -669,7 +665,7 @@ PERF_TEST_P(Sz_Depth, Core_Exp,
 
         TEST_CYCLE() cv::exp(src, dst);
 
-        CPU_SANITY_CHECK(dst);
+        SANITY_CHECK_NOTHING();
     }
 }
 
@@ -705,7 +701,7 @@ PERF_TEST_P(Sz_Depth_Power, Core_Pow,
 
         TEST_CYCLE() cv::pow(src, power, dst);
 
-        CPU_SANITY_CHECK(dst);
+        SANITY_CHECK_NOTHING();
     }
 }
 
@@ -747,7 +743,7 @@ PERF_TEST_P(Sz_Depth_Code, Core_CompareMat,
 
         TEST_CYCLE() cv::compare(src1, src2, dst, cmp_code);
 
-        CPU_SANITY_CHECK(dst);
+        SANITY_CHECK_NOTHING();
     }
 }
 
@@ -784,7 +780,7 @@ PERF_TEST_P(Sz_Depth_Code, Core_CompareScalar,
 
         TEST_CYCLE() cv::compare(src, s, dst, cmp_code);
 
-        CPU_SANITY_CHECK(dst);
+        SANITY_CHECK_NOTHING();
     }
 }
 
@@ -816,7 +812,7 @@ PERF_TEST_P(Sz_Depth, Core_BitwiseNot,
 
         TEST_CYCLE() cv::bitwise_not(src, dst);
 
-        CPU_SANITY_CHECK(dst);
+        SANITY_CHECK_NOTHING();
     }
 }
 
@@ -852,7 +848,7 @@ PERF_TEST_P(Sz_Depth, Core_BitwiseAndMat,
 
         TEST_CYCLE() cv::bitwise_and(src1, src2, dst);
 
-        CPU_SANITY_CHECK(dst);
+        SANITY_CHECK_NOTHING();
     }
 }
 
@@ -892,7 +888,7 @@ PERF_TEST_P(Sz_Depth_Cn, Core_BitwiseAndScalar,
 
         TEST_CYCLE() cv::bitwise_and(src, is, dst);
 
-        CPU_SANITY_CHECK(dst);
+        SANITY_CHECK_NOTHING();
     }
 }
 
@@ -928,7 +924,7 @@ PERF_TEST_P(Sz_Depth, Core_BitwiseOrMat,
 
         TEST_CYCLE() cv::bitwise_or(src1, src2, dst);
 
-        CPU_SANITY_CHECK(dst);
+        SANITY_CHECK_NOTHING();
     }
 }
 
@@ -968,7 +964,7 @@ PERF_TEST_P(Sz_Depth_Cn, Core_BitwiseOrScalar,
 
         TEST_CYCLE() cv::bitwise_or(src, is, dst);
 
-        CPU_SANITY_CHECK(dst);
+        SANITY_CHECK_NOTHING();
     }
 }
 
@@ -1004,7 +1000,7 @@ PERF_TEST_P(Sz_Depth, Core_BitwiseXorMat,
 
         TEST_CYCLE() cv::bitwise_xor(src1, src2, dst);
 
-        CPU_SANITY_CHECK(dst);
+        SANITY_CHECK_NOTHING();
     }
 }
 
@@ -1044,7 +1040,7 @@ PERF_TEST_P(Sz_Depth_Cn, Core_BitwiseXorScalar,
 
         TEST_CYCLE() cv::bitwise_xor(src, is, dst);
 
-        CPU_SANITY_CHECK(dst);
+        SANITY_CHECK_NOTHING();
     }
 }
 
@@ -1148,7 +1144,7 @@ PERF_TEST_P(Sz_Depth, Core_MinMat,
 
         TEST_CYCLE() cv::min(src1, src2, dst);
 
-        CPU_SANITY_CHECK(dst);
+        SANITY_CHECK_NOTHING();
     }
 }
 
@@ -1183,7 +1179,7 @@ PERF_TEST_P(Sz_Depth, Core_MinScalar,
 
         TEST_CYCLE() cv::min(src, val[0], dst);
 
-        CPU_SANITY_CHECK(dst);
+        SANITY_CHECK_NOTHING();
     }
 }
 
@@ -1219,7 +1215,7 @@ PERF_TEST_P(Sz_Depth, Core_MaxMat,
 
         TEST_CYCLE() cv::max(src1, src2, dst);
 
-        CPU_SANITY_CHECK(dst);
+        SANITY_CHECK_NOTHING();
     }
 }
 
@@ -1254,7 +1250,7 @@ PERF_TEST_P(Sz_Depth, Core_MaxScalar,
 
         TEST_CYCLE() cv::max(src, val[0], dst);
 
-        CPU_SANITY_CHECK(dst);
+        SANITY_CHECK_NOTHING();
     }
 }
 
@@ -1296,7 +1292,7 @@ PERF_TEST_P(Sz_3Depth, Core_AddWeighted,
 
         TEST_CYCLE() cv::addWeighted(src1, 0.5, src2, 0.5, 10.0, dst, dst_depth);
 
-        CPU_SANITY_CHECK(dst);
+        SANITY_CHECK_NOTHING();
     }
 }
 
@@ -1349,7 +1345,7 @@ PERF_TEST_P(Sz_Type_Flags, Core_GEMM,
 
         TEST_CYCLE() cv::gemm(src1, src2, 1.0, src3, 1.0, dst, flags);
 
-        CPU_SANITY_CHECK(dst);
+        SANITY_CHECK_NOTHING();
     }
 }
 
@@ -1383,7 +1379,7 @@ PERF_TEST_P(Sz_Type, Core_Transpose,
 
         TEST_CYCLE() cv::transpose(src, dst);
 
-        CPU_SANITY_CHECK(dst);
+        SANITY_CHECK_NOTHING();
     }
 }
 
@@ -1426,7 +1422,7 @@ PERF_TEST_P(Sz_Depth_Cn_Code, Core_Flip,
 
         TEST_CYCLE() cv::flip(src, dst, flipCode);
 
-        CPU_SANITY_CHECK(dst);
+        SANITY_CHECK_NOTHING();
     }
 }
 
@@ -1461,7 +1457,7 @@ PERF_TEST_P(Sz_Type, Core_LutOneChannel,
 
         TEST_CYCLE() cv::LUT(src, lut, dst);
 
-        CPU_SANITY_CHECK(dst);
+        SANITY_CHECK_NOTHING();
     }
 }
 
@@ -1496,7 +1492,7 @@ PERF_TEST_P(Sz_Type, Core_LutMultiChannel,
 
         TEST_CYCLE() cv::LUT(src, lut, dst);
 
-        CPU_SANITY_CHECK(dst);
+        SANITY_CHECK_NOTHING();
     }
 }
 
@@ -1529,7 +1525,7 @@ PERF_TEST_P(Sz, Core_MagnitudeComplex,
 
         TEST_CYCLE() cv::magnitude(xy[0], xy[1], dst);
 
-        CPU_SANITY_CHECK(dst);
+        SANITY_CHECK_NOTHING();
     }
 }
 
@@ -1589,7 +1585,7 @@ PERF_TEST_P(Sz, Core_Magnitude,
 
         TEST_CYCLE() cv::magnitude(src1, src2, dst);
 
-        CPU_SANITY_CHECK(dst);
+        SANITY_CHECK_NOTHING();
     }
 }
 
@@ -1657,7 +1653,7 @@ PERF_TEST_P(Sz_AngleInDegrees, Core_Phase,
 
         TEST_CYCLE() cv::phase(src1, src2, dst, angleInDegrees);
 
-        CPU_SANITY_CHECK(dst);
+        SANITY_CHECK_NOTHING();
     }
 }
 
@@ -1696,8 +1692,7 @@ PERF_TEST_P(Sz_AngleInDegrees, Core_CartToPolar,
 
         TEST_CYCLE() cv::cartToPolar(src1, src2, magnitude, angle, angleInDegrees);
 
-        CPU_SANITY_CHECK(magnitude);
-        CPU_SANITY_CHECK(angle);
+        SANITY_CHECK_NOTHING();
     }
 }
 
@@ -1736,8 +1731,7 @@ PERF_TEST_P(Sz_AngleInDegrees, Core_PolarToCart,
 
         TEST_CYCLE() cv::polarToCart(magnitude, angle, x, y, angleInDegrees);
 
-        CPU_SANITY_CHECK(x);
-        CPU_SANITY_CHECK(y);
+        SANITY_CHECK_NOTHING();
     }
 }
 
@@ -1772,8 +1766,7 @@ PERF_TEST_P(Sz, Core_MeanStdDev,
 
         TEST_CYCLE() cv::meanStdDev(src, cpu_mean, cpu_stddev);
 
-        SANITY_CHECK(cpu_mean);
-        SANITY_CHECK(cpu_stddev);
+        SANITY_CHECK_NOTHING();
     }
 }
 
@@ -1809,11 +1802,9 @@ PERF_TEST_P(Sz_Depth_Norm, Core_Norm,
     }
     else
     {
-        double cpu_dst;
+        TEST_CYCLE() cv::norm(src, normType);
 
-        TEST_CYCLE() cpu_dst = cv::norm(src, normType);
-
-        SANITY_CHECK(cpu_dst, 1e-6, ERROR_RELATIVE);
+        SANITY_CHECK_NOTHING();
     }
 }
 
@@ -1848,11 +1839,9 @@ PERF_TEST_P(Sz_Norm, Core_NormDiff,
     }
     else
     {
-        double cpu_dst;
+        TEST_CYCLE() cv::norm(src1, src2, normType);
 
-        TEST_CYCLE() cpu_dst = cv::norm(src1, src2, normType);
-
-        SANITY_CHECK(cpu_dst);
+        SANITY_CHECK_NOTHING();
     }
 }
 
@@ -1889,7 +1878,7 @@ PERF_TEST_P(Sz_Depth_Cn, Core_Sum,
 
         TEST_CYCLE() cpu_dst = cv::sum(src);
 
-        SANITY_CHECK(cpu_dst, 1e-6, ERROR_RELATIVE);
+        SANITY_CHECK_NOTHING();
     }
 }
 
@@ -1992,8 +1981,7 @@ PERF_TEST_P(Sz_Depth, Core_MinMax,
 
         TEST_CYCLE() cv::minMaxLoc(src, &cpu_minVal, &cpu_maxVal);
 
-        SANITY_CHECK(cpu_minVal);
-        SANITY_CHECK(cpu_maxVal);
+        SANITY_CHECK_NOTHING();
     }
 }
 
@@ -2032,8 +2020,7 @@ PERF_TEST_P(Sz_Depth, Core_MinMaxLoc,
 
         TEST_CYCLE() cv::minMaxLoc(src, &cpu_minVal, &cpu_maxVal, &cpu_minLoc, &cpu_maxLoc);
 
-        SANITY_CHECK(cpu_minVal);
-        SANITY_CHECK(cpu_maxVal);
+        SANITY_CHECK_NOTHING();
     }
 }
 
@@ -2062,11 +2049,9 @@ PERF_TEST_P(Sz_Depth, Core_CountNonZero,
     }
     else
     {
-        int cpu_dst = 0;
+        TEST_CYCLE() cv::countNonZero(src);
 
-        TEST_CYCLE() cpu_dst = cv::countNonZero(src);
-
-        SANITY_CHECK(cpu_dst);
+        SANITY_CHECK_NOTHING();
     }
 }
 
@@ -2112,7 +2097,7 @@ PERF_TEST_P(Sz_Depth_Cn_Code_Dim, Core_Reduce,
 
         TEST_CYCLE() cv::reduce(src, dst, dim, reduceOp);
 
-        CPU_SANITY_CHECK(dst);
+        SANITY_CHECK_NOTHING();
     }
 }
 //////////////////////////////////////////////////////////////////////
@@ -2154,6 +2139,6 @@ PERF_TEST_P(Sz_Depth_NormType, Core_Normalize,
 
         TEST_CYCLE() cv::normalize(src, dst, alpha, beta, norm_type, type);
 
-        CPU_SANITY_CHECK(dst);
+        SANITY_CHECK_NOTHING();
     }
 }

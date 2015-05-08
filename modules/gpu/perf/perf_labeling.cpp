@@ -189,7 +189,6 @@ PERF_TEST_P(Image, DISABLED_Labeling_ConnectedComponents,
 
         TEST_CYCLE() host(host._labels);
 
-        cv::Mat components = host._labels;
-        CPU_SANITY_CHECK(components);
+        SANITY_CHECK_NOTHING();
     }
 }

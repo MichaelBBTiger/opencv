@@ -76,7 +76,7 @@ PERF_TEST_P(Sz_Depth_Cn, MatOp_SetTo,
 
         TEST_CYCLE() dst.setTo(val);
 
-        CPU_SANITY_CHECK(dst);
+        SANITY_CHECK_NOTHING();
     }
 }
 
@@ -115,7 +115,7 @@ PERF_TEST_P(Sz_Depth_Cn, MatOp_SetToMasked,
 
         TEST_CYCLE() dst.setTo(val, mask);
 
-        CPU_SANITY_CHECK(dst);
+        SANITY_CHECK_NOTHING();
     }
 }
 
@@ -153,7 +153,7 @@ PERF_TEST_P(Sz_Depth_Cn, MatOp_CopyToMasked,
 
         TEST_CYCLE() src.copyTo(dst, mask);
 
-        CPU_SANITY_CHECK(dst);
+        SANITY_CHECK_NOTHING();
     }
 }
 
@@ -192,6 +192,6 @@ PERF_TEST_P(Sz_2Depth, MatOp_ConvertTo,
 
         TEST_CYCLE() src.convertTo(dst, depth2, a, b);
 
-        CPU_SANITY_CHECK(dst);
+        SANITY_CHECK_NOTHING();
     }
 }

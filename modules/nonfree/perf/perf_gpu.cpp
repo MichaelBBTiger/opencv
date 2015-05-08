@@ -93,8 +93,7 @@ PERF_TEST_P(Image, GPU_SURF,
 
         TEST_CYCLE() surf(img, cv::noArray(), cpu_keypoints, cpu_descriptors);
 
-        SANITY_CHECK_KEYPOINTS(cpu_keypoints);
-        SANITY_CHECK(cpu_descriptors);
+        SANITY_CHECK_NOTHING();
     }
 }
 

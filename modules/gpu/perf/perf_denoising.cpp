@@ -90,7 +90,7 @@ PERF_TEST_P(Sz_Depth_Cn_KernelSz, Denoising_BilateralFilter,
 
         TEST_CYCLE() cv::bilateralFilter(src, dst, kernel_size, sigma_color, sigma_spatial, borderMode);
 
-        CPU_SANITY_CHECK(dst);
+        SANITY_CHECK_NOTHING();
     }
 }
 
@@ -182,7 +182,7 @@ PERF_TEST_P(Sz_Depth_Cn_WinSz_BlockSz, DISABLED_Denoising_FastNonLocalMeans,
 
         TEST_CYCLE() cv::fastNlMeansDenoising(src, dst, h, block_size, search_widow_size);
 
-        CPU_SANITY_CHECK(dst);
+        SANITY_CHECK_NOTHING();
     }
 }
 
@@ -227,6 +227,6 @@ PERF_TEST_P(Sz_Depth_WinSz_BlockSz, Denoising_FastNonLocalMeansColored,
 
         TEST_CYCLE() cv::fastNlMeansDenoisingColored(src, dst, h, h, block_size, search_widow_size);
 
-        CPU_SANITY_CHECK(dst);
+        SANITY_CHECK_NOTHING();
     }
 }

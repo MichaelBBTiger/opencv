@@ -187,7 +187,7 @@ PERF_TEST_P(Image_MinDistance, Video_GoodFeaturesToTrack,
 
         TEST_CYCLE() cv::goodFeaturesToTrack(image, pts, maxCorners, qualityLevel, minDistance);
 
-        CPU_SANITY_CHECK(pts);
+        SANITY_CHECK_NOTHING();
     }
 }
 
@@ -297,8 +297,7 @@ PERF_TEST_P(ImagePair_Gray_NPts_WinSz_Levels_Iters, Video_PyrLKOpticalFlowSparse
                                      cv::TermCriteria(cv::TermCriteria::COUNT + cv::TermCriteria::EPS, iters, 0.01));
         }
 
-        CPU_SANITY_CHECK(nextPts);
-        CPU_SANITY_CHECK(status);
+        SANITY_CHECK_NOTHING();
     }
 }
 
@@ -399,7 +398,7 @@ PERF_TEST_P(ImagePair, Video_FarnebackOpticalFlow,
 
         TEST_CYCLE() cv::calcOpticalFlowFarneback(frame0, frame1, flow, pyrScale, numLevels, winSize, numIters, polyN, polySigma, flags);
 
-        CPU_SANITY_CHECK(flow);
+        SANITY_CHECK_NOTHING();
     }
 }
 
@@ -439,7 +438,7 @@ PERF_TEST_P(ImagePair, Video_OpticalFlowDual_TVL1,
 
         TEST_CYCLE() alg->calc(frame0, frame1, flow);
 
-        CPU_SANITY_CHECK(flow);
+        SANITY_CHECK_NOTHING();
     }
 }
 
@@ -497,8 +496,7 @@ PERF_TEST_P(ImagePair, DISABLED_Video_OpticalFlowBM,
 
         TEST_CYCLE() calcOpticalFlowBM(frame0, frame1, block_size, shift_size, max_range, false, u, v);
 
-        CPU_SANITY_CHECK(u);
-        CPU_SANITY_CHECK(v);
+        SANITY_CHECK_NOTHING();
     }
 }
 
@@ -641,8 +639,7 @@ PERF_TEST_P(Video, DISABLED_Video_FGDStatModel,
         const cv::Mat background = model->background;
         const cv::Mat foreground = model->foreground;
 
-        CPU_SANITY_CHECK(background);
-        CPU_SANITY_CHECK(foreground);
+        SANITY_CHECK_NOTHING();
     }
 }
 
@@ -797,7 +794,7 @@ PERF_TEST_P(Video_Cn_LearningRate, Video_MOG,
             mog(frame, foreground, learningRate);
         }
 
-        CPU_SANITY_CHECK(foreground);
+        SANITY_CHECK_NOTHING();
     }
 }
 
@@ -954,7 +951,7 @@ PERF_TEST_P(Video_Cn, DISABLED_Video_MOG2,
             mog2(frame, foreground);
         }
 
-        CPU_SANITY_CHECK(foreground);
+        SANITY_CHECK_NOTHING();
     }
 }
 
@@ -1036,7 +1033,7 @@ PERF_TEST_P(Video_Cn, Video_MOG2GetBackgroundImage,
 
         TEST_CYCLE() mog2.getBackgroundImage(background);
 
-        CPU_SANITY_CHECK(background);
+        SANITY_CHECK_NOTHING();
     }
 }
 
@@ -1216,7 +1213,7 @@ PERF_TEST_P(Video_Cn_MaxFeatures, Video_GMG,
             gmg(frame, foreground);
         }
 
-        CPU_SANITY_CHECK(foreground);
+        SANITY_CHECK_NOTHING();
     }
 }
 
@@ -1253,7 +1250,7 @@ PERF_TEST_P(Video, DISABLED_Video_VideoReader, Values("gpu/video/768x576.avi", "
 
         TEST_CYCLE_N(10) reader >> frame;
 
-        CPU_SANITY_CHECK(frame);
+        SANITY_CHECK_NOTHING();
     }
 }
 

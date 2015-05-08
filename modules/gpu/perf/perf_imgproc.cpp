@@ -134,7 +134,7 @@ PERF_TEST_P(Sz_Depth_Cn_Inter_Border_Mode, ImgProc_Remap,
 
         TEST_CYCLE() cv::remap(src, dst, xmap, ymap, interpolation, borderMode);
 
-        CPU_SANITY_CHECK(dst);
+        SANITY_CHECK_NOTHING();
     }
 }
 
@@ -178,7 +178,7 @@ PERF_TEST_P(Sz_Depth_Cn_Inter_Scale, ImgProc_Resize,
 
         TEST_CYCLE() cv::resize(src, dst, cv::Size(), f, f, interpolation);
 
-        CPU_SANITY_CHECK(dst);
+        SANITY_CHECK_NOTHING();
     }
 }
 
@@ -221,7 +221,7 @@ PERF_TEST_P(Sz_Depth_Cn_Scale, ImgProc_ResizeArea,
 
         TEST_CYCLE() cv::resize(src, dst, cv::Size(), f, f, interpolation);
 
-        CPU_SANITY_CHECK(dst);
+        SANITY_CHECK_NOTHING();
     }
 }
 
@@ -273,7 +273,7 @@ PERF_TEST_P(Sz_Depth_Cn_Inter_Border, ImgProc_WarpAffine,
 
         TEST_CYCLE() cv::warpAffine(src, dst, M, size, interpolation, borderMode);
 
-        CPU_SANITY_CHECK(dst);
+        SANITY_CHECK_NOTHING();
     }
 }
 
@@ -321,7 +321,7 @@ PERF_TEST_P(Sz_Depth_Cn_Inter_Border, ImgProc_WarpPerspective,
 
         TEST_CYCLE() cv::warpPerspective(src, dst, M, size, interpolation, borderMode);
 
-        CPU_SANITY_CHECK(dst);
+        SANITY_CHECK_NOTHING();
     }
 }
 
@@ -361,7 +361,7 @@ PERF_TEST_P(Sz_Depth_Cn_Border, ImgProc_CopyMakeBorder,
 
         TEST_CYCLE() cv::copyMakeBorder(src, dst, 5, 5, 5, 5, borderMode);
 
-        CPU_SANITY_CHECK(dst);
+        SANITY_CHECK_NOTHING();
     }
 }
 
@@ -399,7 +399,7 @@ PERF_TEST_P(Sz_Depth_Op, ImgProc_Threshold,
 
         TEST_CYCLE() cv::threshold(src, dst, 100.0, 255.0, threshOp);
 
-        CPU_SANITY_CHECK(dst);
+        SANITY_CHECK_NOTHING();
     }
 }
 
@@ -430,7 +430,7 @@ PERF_TEST_P(Sz, ImgProc_Integral,
 
         TEST_CYCLE() cv::integral(src, dst);
 
-        CPU_SANITY_CHECK(dst);
+        SANITY_CHECK_NOTHING();
     }
 }
 
@@ -495,7 +495,7 @@ PERF_TEST_P(Sz_Depth, ImgProc_HistEvenC1,
 
         TEST_CYCLE() cv::calcHist(&src, 1, channels, cv::Mat(), dst, 1, histSize, ranges);
 
-        CPU_SANITY_CHECK(dst);
+        SANITY_CHECK_NOTHING();
     }
 }
 
@@ -572,7 +572,7 @@ PERF_TEST_P(Sz, ImgProc_CalcHist,
 
         TEST_CYCLE() cv::calcHist(&src, 1, channels, cv::Mat(), dst, 1, histSize, ranges);
 
-        CPU_SANITY_CHECK(dst);
+        SANITY_CHECK_NOTHING();
     }
 }
 
@@ -604,7 +604,7 @@ PERF_TEST_P(Sz, ImgProc_EqualizeHist,
 
         TEST_CYCLE() cv::equalizeHist(src, dst);
 
-        CPU_SANITY_CHECK(dst);
+        SANITY_CHECK_NOTHING();
     }
 }
 
@@ -637,7 +637,7 @@ PERF_TEST_P(Sz_ClipLimit, ImgProc_CLAHE,
 
         TEST_CYCLE() clahe->apply(src, dst);
 
-        CPU_SANITY_CHECK(dst);
+        SANITY_CHECK_NOTHING();
     }
 }
 
@@ -703,7 +703,7 @@ PERF_TEST_P(Image_AppertureSz_L2gradient, ImgProc_Canny,
 
         TEST_CYCLE() cv::Canny(image, dst, low_thresh, high_thresh, apperture_size, useL2gradient);
 
-        CPU_SANITY_CHECK(dst);
+        SANITY_CHECK_NOTHING();
     }
 }
 
@@ -741,7 +741,7 @@ PERF_TEST_P(Image, ImgProc_MeanShiftFiltering,
 
         TEST_CYCLE() cv::pyrMeanShiftFiltering(img, dst, sp, sr);
 
-        CPU_SANITY_CHECK(dst);
+        SANITY_CHECK_NOTHING();
     }
 }
 
@@ -897,7 +897,7 @@ PERF_TEST_P(Sz_KernelSz_Ccorr, ImgProc_Convolve,
 
         TEST_CYCLE() cv::filter2D(image, dst, image.depth(), templ);
 
-        CPU_SANITY_CHECK(dst);
+        SANITY_CHECK_NOTHING();
     }
 }
 
@@ -941,7 +941,7 @@ PERF_TEST_P(Sz_TemplateSz_Cn_Method, DISABLED_ImgProc_MatchTemplate8U,
 
         TEST_CYCLE() cv::matchTemplate(image, templ, dst, method);
 
-        CPU_SANITY_CHECK(dst);
+        SANITY_CHECK_NOTHING();
     }
 }
 
@@ -981,7 +981,7 @@ PERF_TEST_P(Sz_TemplateSz_Cn_Method, DISABLED_ImgProc_MatchTemplate32F,
 
         TEST_CYCLE() cv::matchTemplate(image, templ, dst, method);
 
-        CPU_SANITY_CHECK(dst);
+        SANITY_CHECK_NOTHING();
     }
 }
 
@@ -1019,7 +1019,7 @@ PERF_TEST_P(Sz_Flags, ImgProc_MulSpectrums,
 
         TEST_CYCLE() cv::mulSpectrums(a, b, dst, flag);
 
-        CPU_SANITY_CHECK(dst);
+        SANITY_CHECK_NOTHING();
     }
 }
 
@@ -1083,7 +1083,7 @@ PERF_TEST_P(Sz_Flags, ImgProc_Dft,
 
         TEST_CYCLE() cv::dft(src, dst, flag);
 
-        CPU_SANITY_CHECK(dst);
+        SANITY_CHECK_NOTHING();
     }
 }
 
@@ -1132,7 +1132,7 @@ PERF_TEST_P(Image_Type_Border_BlockSz_ApertureSz, ImgProc_CornerHarris,
 
         TEST_CYCLE() cv::cornerHarris(img, dst, blockSize, apertureSize, k, borderMode);
 
-        CPU_SANITY_CHECK(dst);
+        SANITY_CHECK_NOTHING();
     }
 }
 
@@ -1175,7 +1175,7 @@ PERF_TEST_P(Image_Type_Border_BlockSz_ApertureSz, ImgProc_CornerMinEigenVal,
 
         TEST_CYCLE() cv::cornerMinEigenVal(img, dst, blockSize, apertureSize, borderMode);
 
-        CPU_SANITY_CHECK(dst);
+        SANITY_CHECK_NOTHING();
     }
 }
 
@@ -1329,7 +1329,7 @@ PERF_TEST_P(Sz_Depth_Cn, ImgProc_PyrDown,
 
         TEST_CYCLE() cv::pyrDown(src, dst);
 
-        CPU_SANITY_CHECK(dst);
+        SANITY_CHECK_NOTHING();
     }
 }
 
@@ -1365,7 +1365,7 @@ PERF_TEST_P(Sz_Depth_Cn, ImgProc_PyrUp,
 
         TEST_CYCLE() cv::pyrUp(src, dst);
 
-        CPU_SANITY_CHECK(dst);
+        SANITY_CHECK_NOTHING();
     }
 }
 
@@ -1421,7 +1421,7 @@ PERF_TEST_P(Sz_Depth_Code, ImgProc_CvtColor,
 
         TEST_CYCLE() cv::cvtColor(src, dst, info.code, info.dcn);
 
-        CPU_SANITY_CHECK(dst);
+        SANITY_CHECK_NOTHING();
     }
 }
 
@@ -1460,7 +1460,7 @@ PERF_TEST_P(Sz_Depth_Code, ImgProc_CvtColorBayer,
 
         TEST_CYCLE() cv::cvtColor(src, dst, info.code, info.dcn);
 
-        CPU_SANITY_CHECK(dst);
+        SANITY_CHECK_NOTHING();
     }
 }
 
@@ -1503,7 +1503,7 @@ PERF_TEST_P(Sz_Code, ImgProc_Demosaicing,
 
             TEST_CYCLE() cv::cvtColor(src, dst, code);
 
-            CPU_SANITY_CHECK(dst);
+            SANITY_CHECK_NOTHING();
         }
     }
 }
@@ -1727,7 +1727,7 @@ PERF_TEST_P(Sz, ImgProc_HoughLines,
 
         TEST_CYCLE() cv::HoughLines(src, cpu_lines, rho, theta, threshold);
 
-        SANITY_CHECK(cpu_lines);
+        SANITY_CHECK_NOTHING();
     }
 }
 
@@ -1775,7 +1775,7 @@ PERF_TEST_P(Image, ImgProc_HoughLinesP,
 
         TEST_CYCLE() cv::HoughLinesP(mask, cpu_lines, rho, theta, threshold, minLineLength, maxLineGap);
 
-        SANITY_CHECK(cpu_lines);
+        SANITY_CHECK_NOTHING();
     }
 }
 
@@ -1825,7 +1825,7 @@ PERF_TEST_P(Sz_Dp_MinDist, ImgProc_HoughCircles,
 
         TEST_CYCLE() cv::HoughCircles(src, cpu_circles, CV_HOUGH_GRADIENT, dp, minDist, cannyThreshold, votesThreshold, minRadius, maxRadius);
 
-        SANITY_CHECK(cpu_circles);
+        SANITY_CHECK_NOTHING();
     }
 }
 
@@ -1917,7 +1917,7 @@ PERF_TEST_P(Method_Sz, DISABLED_ImgProc_GeneralizedHough,
 
         TEST_CYCLE() hough->detect(edges, dx, dy, positions);
 
-        CPU_SANITY_CHECK(positions);
+        SANITY_CHECK_NOTHING();
     }
 }
 

@@ -86,7 +86,7 @@ PERF_TEST_P(ImagePair, Calib3D_StereoBM,
 
         TEST_CYCLE() bm(imgLeft, imgRight, dst);
 
-        CPU_SANITY_CHECK(dst);
+        SANITY_CHECK_NOTHING();
     }
 }
 
@@ -251,7 +251,7 @@ PERF_TEST_P(Count, Calib3D_ProjectPoints,
 
         TEST_CYCLE() cv::projectPoints(src, rvec, tvec, camera_mat, cv::noArray(), dst);
 
-        CPU_SANITY_CHECK(dst);
+        SANITY_CHECK_NOTHING();
     }
 }
 
@@ -302,8 +302,7 @@ PERF_TEST_P(Count, Calib3D_SolvePnPRansac,
     {
         TEST_CYCLE() cv::solvePnPRansac(object, image, camera_mat, dist_coef, rvec, tvec);
 
-        CPU_SANITY_CHECK(rvec, 1e-6);
-        CPU_SANITY_CHECK(tvec, 1e-6);
+        SANITY_CHECK_NOTHING();
     }
 }
 
@@ -338,7 +337,7 @@ PERF_TEST_P(Sz_Depth, Calib3D_ReprojectImageTo3D,
 
         TEST_CYCLE() cv::reprojectImageTo3D(src, dst, Q);
 
-        CPU_SANITY_CHECK(dst);
+        SANITY_CHECK_NOTHING();
     }
 }
 

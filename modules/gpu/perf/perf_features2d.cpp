@@ -84,7 +84,7 @@ PERF_TEST_P(Image_Threshold_NonMaxSuppression, Features2D_FAST,
 
         TEST_CYCLE() cv::FAST(img, cpu_keypoints, threshold, nonMaxSuppersion);
 
-        SANITY_CHECK_KEYPOINTS(cpu_keypoints);
+        SANITY_CHECK_NOTHING();
     }
 }
 
@@ -135,8 +135,7 @@ PERF_TEST_P(Image_NFeatures, Features2D_ORB,
 
         TEST_CYCLE() orb(img, cv::noArray(), cpu_keypoints, cpu_descriptors);
 
-        SANITY_CHECK_KEYPOINTS(cpu_keypoints);
-        SANITY_CHECK(cpu_descriptors);
+        SANITY_CHECK_NOTHING();
     }
 }
 
@@ -185,7 +184,7 @@ PERF_TEST_P(DescSize_Norm, Features2D_BFMatch,
 
         TEST_CYCLE() matcher.match(query, train, cpu_matches);
 
-        SANITY_CHECK_MATCHES(cpu_matches);
+        SANITY_CHECK_NOTHING();
     }
 }
 
@@ -250,7 +249,7 @@ PERF_TEST_P(DescSize_K_Norm, Features2D_BFKnnMatch,
         std::vector<cv::DMatch> cpu_matches;
         toOneRowMatches(matchesTbl, cpu_matches);
 
-        SANITY_CHECK_MATCHES(cpu_matches);
+        SANITY_CHECK_NOTHING();
     }
 }
 
@@ -304,6 +303,6 @@ PERF_TEST_P(DescSize_Norm, Features2D_BFRadiusMatch,
         std::vector<cv::DMatch> cpu_matches;
         toOneRowMatches(matchesTbl, cpu_matches);
 
-        SANITY_CHECK_MATCHES(cpu_matches);
+        SANITY_CHECK_NOTHING();
     }
 }

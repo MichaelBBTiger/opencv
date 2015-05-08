@@ -80,7 +80,7 @@ PERF_TEST_P(Sz_Type_KernelSz, Filters_Blur,
 
         TEST_CYCLE() cv::blur(src, dst, cv::Size(ksize, ksize));
 
-        CPU_SANITY_CHECK(dst);
+        SANITY_CHECK_NOTHING();
     }
 }
 
@@ -114,7 +114,7 @@ PERF_TEST_P(Sz_Type_KernelSz, Filters_Sobel, Combine(GPU_TYPICAL_MAT_SIZES, Valu
 
         TEST_CYCLE() cv::Sobel(src, dst, -1, 1, 1, ksize);
 
-        CPU_SANITY_CHECK(dst);
+        SANITY_CHECK_NOTHING();
     }
 }
 
@@ -147,7 +147,7 @@ PERF_TEST_P(Sz_Type, Filters_Scharr, Combine(GPU_TYPICAL_MAT_SIZES, Values(CV_8U
 
         TEST_CYCLE() cv::Scharr(src, dst, -1, 1, 0);
 
-        CPU_SANITY_CHECK(dst);
+        SANITY_CHECK_NOTHING();
     }
 }
 
@@ -181,7 +181,7 @@ PERF_TEST_P(Sz_Type_KernelSz, Filters_GaussianBlur, Combine(GPU_TYPICAL_MAT_SIZE
 
         TEST_CYCLE() cv::GaussianBlur(src, dst, cv::Size(ksize, ksize), 0.5);
 
-        CPU_SANITY_CHECK(dst);
+        SANITY_CHECK_NOTHING();
     }
 }
 
@@ -214,7 +214,7 @@ PERF_TEST_P(Sz_Type_KernelSz, Filters_Laplacian, Combine(GPU_TYPICAL_MAT_SIZES, 
 
         TEST_CYCLE() cv::Laplacian(src, dst, -1, ksize);
 
-        CPU_SANITY_CHECK(dst);
+        SANITY_CHECK_NOTHING();
     }
 }
 
@@ -249,7 +249,7 @@ PERF_TEST_P(Sz_Type, Filters_Erode, Combine(GPU_TYPICAL_MAT_SIZES, Values(CV_8UC
 
         TEST_CYCLE() cv::erode(src, dst, ker);
 
-        CPU_SANITY_CHECK(dst);
+        SANITY_CHECK_NOTHING();
     }
 }
 
@@ -284,7 +284,7 @@ PERF_TEST_P(Sz_Type, Filters_Dilate, Combine(GPU_TYPICAL_MAT_SIZES, Values(CV_8U
 
         TEST_CYCLE() cv::dilate(src, dst, ker);
 
-        CPU_SANITY_CHECK(dst);
+        SANITY_CHECK_NOTHING();
     }
 }
 
@@ -325,7 +325,7 @@ PERF_TEST_P(Sz_Type_Op, Filters_MorphologyEx, Combine(GPU_TYPICAL_MAT_SIZES, Val
 
         TEST_CYCLE() cv::morphologyEx(src, dst, morphOp, ker);
 
-        CPU_SANITY_CHECK(dst);
+        SANITY_CHECK_NOTHING();
     }
 }
 
@@ -361,6 +361,6 @@ PERF_TEST_P(Sz_Type_KernelSz, Filters_Filter2D, Combine(GPU_TYPICAL_MAT_SIZES, V
 
         TEST_CYCLE() cv::filter2D(src, dst, -1, kernel);
 
-        CPU_SANITY_CHECK(dst);
+        SANITY_CHECK_NOTHING();
     }
 }
